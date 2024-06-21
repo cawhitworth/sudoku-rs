@@ -2,7 +2,7 @@ mod multiset;
 mod grid;
 mod candidates;
 use candidates::{get_candidates, GridCandidates};
-use grid::{check_grid, Grid};
+use grid::{check_grid, Grid, GridState};
 
 fn solve_step(g: &mut Grid) -> grid::GridState {
     let result = check_grid(g);
@@ -13,8 +13,8 @@ fn solve_step(g: &mut Grid) -> grid::GridState {
     match get_candidates(g) {
         None => result,
         Some(gc) => {
-            for row in 0..8 {
-                for col in 0..8 {
+            for row in 0..9 {
+                for col in 0..9 {
                     if gc[row][col].len() == 1 {
                         let c: Vec<&u8> = (&gc[row][col]).into_iter().collect();
                         g.set(row, col, grid::Cell::Value(*c[0]));
@@ -40,15 +40,17 @@ fn main() {
 
     let mut g = Grid::from(&partial);
 
-    let result = check_grid(&g);
+    let mut result = check_grid(&g);
 
     println!("{:?}", result);
 
     println!("{}", g);
 
-    let s2 = solve_step(&mut g);
-    println!("{:?}", result);
+    while result == GridState::Incomplete {
+        result = solve_step(&mut g);
+        println!("{:?}", result);
 
-    println!("{}", g);
+        println!("{}", &g);
+    }
 }
 

@@ -40,7 +40,7 @@ impl fmt::Display for Grid
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut output: Vec<String> = vec![];
-        for row in 0..8 {
+        for row in 0..9 {
             let line = self.grid[row]
                 .iter()
                 .map( |c| match c {
@@ -103,6 +103,7 @@ pub type Set = MultiSet<u8>;
 
 pub fn check_grid(grid: &Grid) -> GridState {
 
+    let mut result = GridState::Complete;
     let mut row_entries = Set::new(9);
     let mut col_entries = Set::new(9);
     let mut house_entries = Set::new(9);
@@ -126,11 +127,11 @@ pub fn check_grid(grid: &Grid) -> GridState {
                     }
                 },
                 Cell::Empty => {
-                    return GridState::Incomplete
+                    result = GridState::Incomplete
                 }
             }
         }
     }
 
-    GridState::Complete
+    result
 }

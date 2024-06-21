@@ -31,8 +31,8 @@ pub fn get_candidates(grid: &Grid) -> Option<GridCandidates> {
                         gc[index][col].remove(v);
                         gc[row][index].remove(v);
 
-                        let house_row = row / 3;
-                        let house_col = col / 3;
+                        let house_row = (row / 3)*3;
+                        let house_col = (col / 3)*3;
 
                         let index_row = index / 3;
                         let index_col = index % 3;
